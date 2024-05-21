@@ -9,11 +9,11 @@ func TestNewAndLengthOfEmptyList(t *testing.T) {
 	list := New[string]()
 
 	if list == nil {
-		t.Error("it's nil")
+		t.Error("new : it's nil")
 	}
 
 	if list.Length() != 0 {
-		t.Error("must be empty")
+		t.Error("length : must be empty")
 	}
 
 }
@@ -26,7 +26,7 @@ func TestAdd(t *testing.T) {
 	list.Add("KHalid")
 
 	if list.Length() != 2 {
-		t.Errorf("length expected %d, but got %d", 2, list.Length())
+		t.Errorf("add : length expected %d, but got %d", 2, list.Length())
 	}
 }
 
@@ -42,7 +42,7 @@ func TestGet(t *testing.T) {
 
 	for i, v := range actual {
 		if list.Get(i) != v {
-			t.Errorf("Expected %s, actual %s", v, list.Get(i))
+			t.Errorf("add : expected %s, actual %s", v, list.Get(i))
 		}
 	}
 }
@@ -56,7 +56,7 @@ func TestRemoveUnvalideIndex(t *testing.T) {
 	for _, value := range unvalideIndexes {
 		err := list.Remove(value)
 		if err == nil {
-			t.Errorf("out range check is KO")
+			t.Errorf("remove : out range check is KO")
 		}
 	}
 }
@@ -79,8 +79,55 @@ func TestRemove(t *testing.T) {
 		}
 
 		if list.Length() != i {
-			t.Errorf("Expected %d, actual %d", i, list.Length())
+			t.Errorf("remove : xpected %d, actual %d", i, list.Length())
 		}
 	}
 
+}
+
+func TestFirstIndex(t *testing.T) {
+
+	list := New[string]()
+
+	actual := []string{"med", "ahmed", "ahmed"}
+
+	for _, v := range actual {
+		list.Add(v)
+	}
+
+	j, ok := list.FirstIndex("med")
+	if !ok || j != 0 {
+		t.Errorf("firstIndex : expected %d actual %d", 0, j)
+	}
+
+	j, ok = list.FirstIndex("ahmed")
+	if !ok || j != 1 {
+		t.Errorf("firstIndex : expected %d actual %d", 1, j)
+	}
+
+	j, ok = list.FirstIndex("unknown")
+	if ok || j != -1 {
+		t.Errorf("firstIndex : expected %d actual %d", 0, j)
+	}
+}
+
+func TestRemoveByValue(t *testing.T) {
+
+	list := New[string]()
+
+	actual := []string{"med", "ahmed", "ahmed"}
+
+	for _, v := range actual {
+		list.Add(v)
+	}
+
+	for i := 2; i < len(actual); i++ {
+
+		j, ok := list.RemoveByValue(actual[i])
+
+		if j < 0 || !ok || list.Length() != i {
+			t.Errorf("removeByValue : expected %d actual %d ", i, j)
+		}
+
+	}
 }

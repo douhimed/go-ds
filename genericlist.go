@@ -43,3 +43,29 @@ func (l *GenericList[T]) Remove(i int) error {
 	l.data = append(l.data[:i], l.data[i+1:]...)
 	return nil
 }
+
+func (l *GenericList[T]) FirstIndex(value T) (int, bool) {
+	index := -1
+	found := false
+
+	for i := 0; i < len(l.data); i++ {
+		if value == l.data[i] {
+			index = i
+			found = true
+			break
+		}
+	}
+
+	return index, found
+}
+
+func (l *GenericList[T]) RemoveByValue(value T) (int, bool) {
+	index, ok := l.FirstIndex(value)
+
+	if !ok || index < 0 {
+		return -1, false
+	}
+
+	l.data = append(l.data[:index], l.data[index+1:]...)
+	return index, true
+}

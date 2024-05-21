@@ -46,3 +46,41 @@ func TestGet(t *testing.T) {
 		}
 	}
 }
+
+func TestRemoveUnvalideIndex(t *testing.T) {
+
+	list := New[string]()
+
+	unvalideIndexes := []int{-1, 99}
+
+	for _, value := range unvalideIndexes {
+		err := list.Remove(value)
+		if err == nil {
+			t.Errorf("out range check is KO")
+		}
+	}
+}
+
+func TestRemove(t *testing.T) {
+
+	list := New[string]()
+
+	actual := []string{"med", "ahmed", "nabil"}
+
+	for _, v := range actual {
+		list.Add(v)
+	}
+
+	for i := 2; i >= 0; i-- {
+		err := list.Remove(i)
+
+		if err != nil {
+			t.Error(err.Error())
+		}
+
+		if list.Length() != i {
+			t.Errorf("Expected %d, actual %d", i, list.Length())
+		}
+	}
+
+}

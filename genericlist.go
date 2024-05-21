@@ -1,8 +1,9 @@
 package main
 
+import "errors"
+
 type GenericList[T comparable] struct {
 	data []T
-	size int
 }
 
 func New[T comparable]() *GenericList[T] {
@@ -13,7 +14,6 @@ func New[T comparable]() *GenericList[T] {
 
 func (l *GenericList[T]) Add(value T) {
 	l.data = append(l.data, value)
-	l.size++
 }
 
 func (l *GenericList[T]) Get(index int) T {
@@ -32,5 +32,14 @@ func (l *GenericList[T]) Get(index int) T {
 }
 
 func (l *GenericList[T]) Length() int {
-	return l.size
+	return len(l.data)
+}
+
+func (l *GenericList[T]) Remove(i int) error {
+	if i < 0 || i >= len(l.data) {
+		return errors.New("out of range")
+	}
+
+	l.data = append(l.data[:i], l.data[i+1:]...)
+	return nil
 }

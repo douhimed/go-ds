@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -133,5 +134,18 @@ func TestNewAndLengthSafeMap(t *testing.T) {
 
 	if sm.Length() != 0 {
 		t.Errorf("length : expected %d, actual %d", 0, sm.Length())
+	}
+}
+
+func TestPut(t *testing.T) {
+
+	sm := NewMap[string, int]()
+
+	for i := 0; i < 3; i++ {
+		sm.put(fmt.Sprintf("user_%d", i), i)
+	}
+
+	if sm.Length() != 3 {
+		t.Errorf("put : expected %d, actual %d", 3, sm.Length())
 	}
 }

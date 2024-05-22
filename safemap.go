@@ -32,10 +32,5 @@ func (sm *SafeMap[K, V]) Get(key K) (V, bool) {
 	defer sm.mu.Unlock()
 
 	value, ok := sm.data[key]
-
-	if !ok {
-		return value, false
-	}
-
-	return value, true
+	return value, ok
 }

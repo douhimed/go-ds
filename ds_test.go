@@ -208,6 +208,8 @@ func TestDelete(t *testing.T) {
 ************ MAP TESTS : GO routines *********
 **********************************************/
 
+// RUN : go test -race
+
 func TestWithGoRoutines(t *testing.T) {
 
 	sm := NewMap[int, int]()

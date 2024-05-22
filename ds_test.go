@@ -232,3 +232,60 @@ func TestWithGoRoutines(t *testing.T) {
 	}
 
 }
+
+/*********************************************
+***************** LinkedLIst *****************
+**********************************************/
+
+func TestNewAndLengthOfLinkedList(t *testing.T) {
+
+	ll := NewLinkedList[string]()
+
+	if ll == nil {
+		t.Error("newLinkedList : return nil unstead of a LinkedList")
+	}
+
+	if ll.Length() != 0 {
+		t.Errorf("length linkedList : extepcted %d actual %d", 0, ll.Length())
+	}
+
+}
+
+func TestAddIntoLinkedList(t *testing.T) {
+
+	ll := NewLinkedList[string]()
+
+	actual := []string{"med", "ahmed"}
+
+	for i, v := range actual {
+		ll.Add(v)
+		if ll.Length() != (i + 1) {
+			t.Errorf("add : expected %d, actual %d", i+1, ll.Length())
+		}
+	}
+}
+
+func GenerateLinkedList[T comparable](values ...T) *LinkedList[T] {
+	ll := NewLinkedList[T]()
+	for _, v := range values {
+		ll.Add(v)
+	}
+	return ll
+}
+
+func TestIndexOf(t *testing.T) {
+
+	actual := []string{"med", "ahmed"}
+	ll := GenerateLinkedList[string](actual...)
+
+	for i, v := range actual {
+		if ll.IndexOf(v) != i {
+			t.Errorf("indexOf : expected %d, actual %d", i, ll.IndexOf(v))
+		}
+	}
+
+	if ll.IndexOf("unknown") != -1 {
+		t.Errorf("indexOf : expected %d, actual %d", -1, ll.IndexOf("unknown"))
+	}
+
+}

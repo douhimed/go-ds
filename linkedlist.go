@@ -55,7 +55,7 @@ func (ll *LinkedList[T]) IndexOf(v T) int {
 
 func (ll *LinkedList[T]) AddAt(index int, value T) bool {
 	if index < 0 || index > ll.size {
-		panic("index out of scope")
+		return false
 	}
 
 	nn := &Node[T]{value: value}

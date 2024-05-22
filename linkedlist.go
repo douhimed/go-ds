@@ -52,3 +52,26 @@ func (ll *LinkedList[T]) IndexOf(v T) int {
 
 	return -1
 }
+
+func (ll *LinkedList[T]) AddAt(index int, value T) bool {
+	if index < 0 || index > ll.size {
+		panic("index out of scope")
+	}
+
+	nn := &Node[T]{value: value}
+
+	if index == 0 {
+		nn.next = ll.head
+		ll.head = nn
+		return true
+	}
+
+	current := ll.head
+	for i := 0; i < index-1; i++ {
+		current = current.next
+	}
+
+	nn.next = current.next
+	current.next = nn
+	return true
+}

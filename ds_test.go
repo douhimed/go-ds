@@ -289,3 +289,35 @@ func TestIndexOf(t *testing.T) {
 	}
 
 }
+
+func TestAddAt(t *testing.T) {
+
+	actual := []string{"med", "ahmed"}
+	ll := GenerateLinkedList[string](actual...)
+
+	ok := ll.AddAt(1, "hicham")
+
+	if !ok {
+		t.Error("addAt :something went wrong")
+	}
+
+	if ll.IndexOf("hicham") != 1 {
+		t.Errorf("indexOf : expected %d, actual %d", 1, ll.IndexOf("hicham"))
+	}
+
+	ok = ll.AddAt(2, "khalid")
+
+	if !ok {
+		t.Error("addAt :something went wrong")
+	}
+
+	if ll.IndexOf("khalid") != 2 {
+		t.Errorf("indexOf : expected %d, actual %d", 2, ll.IndexOf("khalid"))
+	}
+
+	ok = ll.AddAt(10, "unknown")
+	if ok {
+		t.Error("addAt :something went wrong")
+	}
+
+}

@@ -26,3 +26,16 @@ func (sm *SafeMap[K, V]) put(key K, value V) {
 
 	sm.data[key] = value
 }
+
+func (sm *SafeMap[K, V]) Get(key K) (V, bool) {
+	sm.mu.Lock()
+	defer sm.mu.Unlock()
+
+	value, ok := sm.data[key]
+
+	if !ok {
+		return value, false
+	}
+
+	return value, true
+}

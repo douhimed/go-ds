@@ -149,3 +149,34 @@ func TestPut(t *testing.T) {
 		t.Errorf("put : expected %d, actual %d", 3, sm.Length())
 	}
 }
+
+func generateMap[K comparable](keys ...K) *SafeMap[K, int] {
+	sm := NewMap[K, int]()
+
+	for i := 0; i < len(keys); i++ {
+		sm.put(keys[i], i)
+	}
+
+	return sm
+}
+
+func TestGetOfMap(t *testing.T) {
+
+	actual := []string{"med", "ahmed"}
+	sm := generateMap(actual...)
+
+	for i, value := range actual {
+
+		if v, ok := sm.Get(value); !ok {
+			t.Errorf("get : expected %d not found", i)
+		} else if v != i {
+			t.Errorf("get : expected %d actual %v", i, v)
+		}
+
+	}
+
+	if _, ok := sm.Get("unknown"); ok {
+		t.Errorf("get : expected %v not found", "unknown")
+	}
+
+}

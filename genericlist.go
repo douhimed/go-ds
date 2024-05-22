@@ -6,7 +6,7 @@ type GenericList[T comparable] struct {
 	data []T
 }
 
-func New[T comparable]() *GenericList[T] {
+func NewList[T comparable]() *GenericList[T] {
 	return &GenericList[T]{
 		data: []T{},
 	}

@@ -20,7 +20,7 @@ func (sm *SafeMap[K, V]) Length() int {
 	return len(sm.data)
 }
 
-func (sm *SafeMap[K, V]) put(key K, value V) {
+func (sm *SafeMap[K, V]) Put(key K, value V) {
 	sm.mu.Lock()
 	defer sm.mu.Unlock()
 
@@ -33,4 +33,16 @@ func (sm *SafeMap[K, V]) Get(key K) (V, bool) {
 
 	value, ok := sm.data[key]
 	return value, ok
+}
+
+func (sm *SafeMap[K, V]) Delete(key K) bool {
+	sm.mu.Lock()
+	defer sm.mu.Unlock()
+
+	if _, ok := sm.data[key]; !ok {
+		return false
+	}
+
+	delete(sm.data, key)
+	return true
 }

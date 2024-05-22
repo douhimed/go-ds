@@ -142,7 +142,7 @@ func TestPut(t *testing.T) {
 	sm := NewMap[string, int]()
 
 	for i := 0; i < 3; i++ {
-		sm.put(fmt.Sprintf("user_%d", i), i)
+		sm.Put(fmt.Sprintf("user_%d", i), i)
 	}
 
 	if sm.Length() != 3 {
@@ -154,7 +154,7 @@ func generateMap[K comparable](keys ...K) *SafeMap[K, int] {
 	sm := NewMap[K, int]()
 
 	for i := 0; i < len(keys); i++ {
-		sm.put(keys[i], i)
+		sm.Put(keys[i], i)
 	}
 
 	return sm
@@ -177,6 +177,56 @@ func TestGetOfMap(t *testing.T) {
 
 	if _, ok := sm.Get("unknown"); ok {
 		t.Errorf("get : expected %v not found", "unknown")
+	}
+
+}
+
+func TestDelete(t *testing.T) {
+
+	actual := []string{"med", "ahmed"}
+	sm := generateMap(actual...)
+
+	for i, v := range actual {
+
+		if ok := sm.Delete(v); !ok {
+			t.Errorf("delete : didn't delete the key %s", v)
+		}
+
+		if 1-i != sm.Length() {
+			t.Errorf("delete : expected %d, actual %d", 1-i, sm.Length())
+		}
+
+	}
+
+	if ok := sm.Delete("unknown"); ok {
+		t.Error("delete : delete something not exist")
+	}
+
+}
+
+/*********************************************
+************ MAP TESTS : GO routines *********
+**********************************************/
+
+func TestWithGoRoutines(t *testing.T) {
+
+	sm := NewMap[int, int]()
+
+	for i := 0; i < 10; i++ {
+		go func(i int) {
+			sm.Put(i, i*10)
+
+			v, ok := sm.Get(i)
+
+			if !ok {
+				t.Errorf("go routine : didn't find %d", i)
+			}
+
+			if v != i*10 {
+				t.Errorf("go routine : expected %d, actual %d", i*10, v)
+			}
+
+		}(i)
 	}
 
 }
